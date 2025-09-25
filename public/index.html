@@ -53,8 +53,8 @@
         <div class="max-w-md mx-auto">
             <!-- Header -->
             <div class="text-center mb-8 fade-in">
-                <h1 class="text-3xl font-bold text-white mb-2">Welcome to CAB's Karaoke Night</h1>
-                <p class="text-purple-100">Let me hear you, Bereans!🫵</p>
+                <h1 id="welcomeTitle" class="text-3xl font-bold text-white mb-2">Welcome to CAB's Karaoke Night</h1>
+                <p id="welcomeSubtitle" class="text-purple-100">Let me hear you, Bereans!🫵</p>
             </div>
 
             <!-- Form -->
@@ -244,6 +244,36 @@
                 successModal.classList.add('hidden');
             }
         });
+
+        // Load and apply settings
+        async function loadSettings() {
+            try {
+                const response = await fetch('/api/settings');
+                const settings = await response.json();
+                
+                // Update welcome message
+                document.getElementById('welcomeTitle').textContent = settings.welcomeMessage;
+                document.getElementById('welcomeSubtitle').textContent = settings.subtitleMessage;
+                
+                // Update background
+                const body = document.body;
+                if (settings.background === 'solid') {
+                    body.style.background = 'linear-gradient(135deg, #9333ea 0%, #2563eb 100%)';
+                } else if (settings.background === 'solid-dark') {
+                    body.style.background = '#111827';
+                } else if (settings.background === 'solid-light') {
+                    body.style.background = 'linear-gradient(135deg, #60a5fa 0%, #a855f7 100%)';
+                } else {
+                    body.style.background = `url('${settings.background}') no-repeat center center fixed`;
+                    body.style.backgroundSize = 'cover';
+                }
+            } catch (error) {
+                console.error('Error loading settings:', error);
+            }
+        }
+
+        // Load settings when page loads
+        loadSettings();
     </script>
 </body>
 </html>

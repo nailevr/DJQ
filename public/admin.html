@@ -41,6 +41,25 @@
                         </svg>
                         Refresh
                     </button>
+                    <button 
+                        id="clearListBtn"
+                        class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center"
+                    >
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        Clear List
+                    </button>
+                    <button 
+                        id="settingsBtn"
+                        class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors flex items-center justify-center"
+                    >
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        Customize
+                    </button>
                     <a 
                         href="/qr"
                         class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors text-center"
@@ -52,7 +71,7 @@
         </div>
 
         <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div class="bg-white rounded-lg shadow-lg p-6 fade-in">
                 <div class="flex items-center">
                     <div class="p-3 rounded-full bg-blue-100 text-blue-600">
@@ -81,19 +100,6 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-lg shadow-lg p-6 fade-in">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-purple-100 text-purple-600">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Auto Refresh</p>
-                        <p id="autoRefreshStatus" class="text-2xl font-semibold text-gray-900">ON</p>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- Submissions Table -->
@@ -121,17 +127,72 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Song Name
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-12 cursor-pointer hover:bg-gray-100" onclick="sortTable('played')">
+                                    <div class="flex items-center">
+                                        Played
+                                        <svg class="ml-1 w-3 h-3 opacity-0" id="sort-played" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortTable('song_name')">
+                                    <div class="flex items-center">
+                                        Song Name
+                                        <svg class="ml-1 w-3 h-3 opacity-0" id="sort-song_name" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortTable('artist')">
+                                    <div class="flex items-center">
+                                        Artist
+                                        <svg class="ml-1 w-3 h-3 opacity-0" id="sort-artist" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                                        </svg>
+                                    </div>
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Artist
+                                    Original Input
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    User's Name
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortTable('user_name')">
+                                    <div class="flex items-center">
+                                        User's Name
+                                        <svg class="ml-1 w-3 h-3 opacity-0" id="sort-user_name" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                                        </svg>
+                                    </div>
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Submitted
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortTable('bpm')">
+                                    <div class="flex items-center">
+                                        BPM
+                                        <svg class="ml-1 w-3 h-3 opacity-0" id="sort-bpm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortTable('key_camelot')">
+                                    <div class="flex items-center">
+                                        Camelot Key
+                                        <svg class="ml-1 w-3 h-3 opacity-0" id="sort-key_camelot" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortTable('key_regular')">
+                                    <div class="flex items-center">
+                                        Regular Key
+                                        <svg class="ml-1 w-3 h-3 opacity-0" id="sort-key_regular" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortTable('created_at')">
+                                    <div class="flex items-center">
+                                        Submitted
+                                        <svg class="ml-1 w-3 h-3 opacity-0" id="sort-created_at" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                                        </svg>
+                                    </div>
                                 </th>
                             </tr>
                         </thead>
@@ -149,9 +210,156 @@
         </div>
     </div>
 
+    <!-- Customization Modal -->
+    <div id="customizationModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+        <div class="relative top-10 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+            <div class="mt-3">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-medium text-gray-900">Customize User Form</h3>
+                    <button onclick="closeCustomizationModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="space-y-6">
+                    <!-- Background Settings -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Background Image</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="setBackground('agifcolossal3opt1.gif')" class="p-3 border rounded-lg hover:bg-gray-50 transition-colors">
+                                <div class="w-full h-16 bg-cover bg-center rounded" style="background-image: url('agifcolossal3opt1.gif')"></div>
+                                <p class="text-xs mt-1 text-center">Current (Animated)</p>
+                            </button>
+                            <button onclick="setBackground('solid')" class="p-3 border rounded-lg hover:bg-gray-50 transition-colors">
+                                <div class="w-full h-16 bg-gradient-to-br from-purple-600 to-blue-600 rounded"></div>
+                                <p class="text-xs mt-1 text-center">Purple Gradient</p>
+                            </button>
+                            <button onclick="setBackground('solid-dark')" class="p-3 border rounded-lg hover:bg-gray-50 transition-colors">
+                                <div class="w-full h-16 bg-gray-900 rounded"></div>
+                                <p class="text-xs mt-1 text-center">Dark</p>
+                            </button>
+                            <button onclick="setBackground('solid-light')" class="p-3 border rounded-lg hover:bg-gray-50 transition-colors">
+                                <div class="w-full h-16 bg-gradient-to-br from-blue-400 to-purple-400 rounded"></div>
+                                <p class="text-xs mt-1 text-center">Light Gradient</p>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Welcome Message -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Welcome Message</label>
+                        <input 
+                            type="text" 
+                            id="welcomeMessage"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                            placeholder="Welcome to CAB's Karaoke Night"
+                            value="Welcome to CAB's Karaoke Night"
+                        >
+                    </div>
+                    
+                    <!-- Subtitle -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Subtitle</label>
+                        <input 
+                            type="text" 
+                            id="subtitleMessage"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                            placeholder="Let me hear you, Bereans!🫵"
+                            value="Let me hear you, Bereans!🫵"
+                        >
+                    </div>
+                </div>
+                
+                <div class="mt-6 flex gap-3 justify-end">
+                    <button 
+                        onclick="closeCustomizationModal()"
+                        class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
+                    >
+                        Cancel
+                    </button>
+                    <button 
+                        onclick="applyCustomizations()"
+                        class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
+                    >
+                        Apply Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Clear Confirmation Modal -->
+    <div id="clearConfirmModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3">
+                <div class="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4">
+                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.268 19.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                    </svg>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">Clear All Song Requests</h3>
+                    <p class="text-sm text-gray-500 mb-6">Are you sure you want to delete all song requests? This action cannot be undone.</p>
+                    <div class="flex gap-3 justify-center">
+                        <button 
+                            onclick="closeClearConfirmModal()"
+                            class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
+                        >
+                            Cancel
+                        </button>
+                        <button 
+                            onclick="confirmClearList()"
+                            class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                        >
+                            Clear All
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Original Input Modal -->
+    <div id="originalInputModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-medium text-gray-900">Original User Input</h3>
+                    <button onclick="closeOriginalInputModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Original Song Name:</label>
+                        <div class="p-3 bg-gray-100 rounded-md">
+                            <span id="originalSongName" class="text-gray-900"></span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Original Artist:</label>
+                        <div class="p-3 bg-gray-100 rounded-md">
+                            <span id="originalArtist" class="text-gray-900"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <button onclick="closeOriginalInputModal()" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         let autoRefreshInterval;
-        let isAutoRefreshEnabled = true;
+        let currentSort = { column: null, direction: 'asc' };
+        let allSubmissions = [];
 
         // DOM elements
         const loadingState = document.getElementById('loadingState');
@@ -160,24 +368,14 @@
         const submissionsTableBody = document.getElementById('submissionsTableBody');
         const totalRequests = document.getElementById('totalRequests');
         const todayRequests = document.getElementById('todayRequests');
-        const autoRefreshStatus = document.getElementById('autoRefreshStatus');
         const refreshBtn = document.getElementById('refreshBtn');
+        const clearListBtn = document.getElementById('clearListBtn');
+        const settingsBtn = document.getElementById('settingsBtn');
 
         // Format date
         function formatDate(dateString) {
             const date = new Date(dateString);
-            const now = new Date();
-            const diffInHours = (now - date) / (1000 * 60 * 60);
-
-            if (diffInHours < 1) {
-                const minutes = Math.floor(diffInHours * 60);
-                return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
-            } else if (diffInHours < 24) {
-                const hours = Math.floor(diffInHours);
-                return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
-            } else {
-                return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            }
+            return date.toLocaleString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
         }
 
         // Fetch and display submissions
@@ -185,6 +383,9 @@
             try {
                 const response = await fetch('/api/submissions');
                 const submissions = await response.json();
+                
+                // Store all submissions for sorting
+                allSubmissions = submissions;
 
                 // Update stats
                 totalRequests.textContent = submissions.length;
@@ -198,31 +399,8 @@
                 // Hide loading state
                 loadingState.classList.add('hidden');
 
-                if (submissions.length === 0) {
-                    emptyState.classList.remove('hidden');
-                    tableContainer.classList.add('hidden');
-                } else {
-                    emptyState.classList.add('hidden');
-                    tableContainer.classList.remove('hidden');
-                    
-                    // Populate table
-                    submissionsTableBody.innerHTML = submissions.map(submission => `
-                        <tr class="hover:bg-gray-50 transition-colors">
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">${submission.song_name}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">${submission.artist}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">${submission.user_name || 'Anonymous'}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-500">${formatDate(submission.created_at)}</div>
-                            </td>
-                        </tr>
-                    `).join('');
-                }
+                // Render table with current sort
+                renderTable();
             } catch (error) {
                 console.error('Error fetching submissions:', error);
                 loadingState.innerHTML = `
@@ -236,22 +414,6 @@
             }
         }
 
-        // Toggle auto refresh
-        function toggleAutoRefresh() {
-            isAutoRefreshEnabled = !isAutoRefreshEnabled;
-            
-            if (isAutoRefreshEnabled) {
-                autoRefreshStatus.textContent = 'ON';
-                autoRefreshStatus.classList.remove('text-red-500');
-                autoRefreshStatus.classList.add('text-green-500');
-                startAutoRefresh();
-            } else {
-                autoRefreshStatus.textContent = 'OFF';
-                autoRefreshStatus.classList.remove('text-green-500');
-                autoRefreshStatus.classList.add('text-red-500');
-                stopAutoRefresh();
-            }
-        }
 
         // Start auto refresh
         function startAutoRefresh() {
@@ -269,9 +431,105 @@
             }
         }
 
+        // Clear list function
+        function clearList() {
+            document.getElementById('clearConfirmModal').classList.remove('hidden');
+        }
+        
+        async function confirmClearList() {
+            console.log('Starting clear process...');
+            try {
+                console.log('Sending DELETE request to /api/clear');
+                const response = await fetch('/api/clear', {
+                    method: 'DELETE'
+                });
+                
+                console.log('Response status:', response.status);
+                const result = await response.json();
+                console.log('Response data:', result);
+                
+                if (response.ok) {
+                    // Clear localStorage for played songs
+                    localStorage.removeItem('playedSongs');
+                    console.log('Cleared localStorage');
+                    
+                    // Close modal
+                    closeClearConfirmModal();
+                    console.log('Closed modal');
+                    
+                    // Refresh the table
+                    await fetchSubmissions();
+                    console.log('Refreshed table');
+                    
+                    console.log('All song requests cleared successfully!');
+                } else {
+                    throw new Error('Failed to clear list: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error clearing list:', error);
+                closeClearConfirmModal();
+                alert('Error clearing the list: ' + error.message);
+            }
+        }
+        
+        function closeClearConfirmModal() {
+            document.getElementById('clearConfirmModal').classList.add('hidden');
+        }
+
+        // Customization functions
+        function openCustomizationModal() {
+            document.getElementById('customizationModal').classList.remove('hidden');
+        }
+        
+        function closeCustomizationModal() {
+            document.getElementById('customizationModal').classList.add('hidden');
+        }
+        
+        function setBackground(backgroundType) {
+            // Store the selection visually
+            document.querySelectorAll('[onclick^="setBackground"]').forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-purple-500');
+            });
+            event.target.closest('button').classList.add('ring-2', 'ring-purple-500');
+            
+            // Store the selection
+            localStorage.setItem('selectedBackground', backgroundType);
+        }
+        
+        async function applyCustomizations() {
+            const welcomeMessage = document.getElementById('welcomeMessage').value;
+            const subtitleMessage = document.getElementById('subtitleMessage').value;
+            const selectedBackground = localStorage.getItem('selectedBackground') || 'agifcolossal3opt1.gif';
+            
+            try {
+                const response = await fetch('/api/update-settings', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        welcomeMessage,
+                        subtitleMessage,
+                        background: selectedBackground
+                    })
+                });
+                
+                if (response.ok) {
+                    closeCustomizationModal();
+                    alert('Settings updated successfully! The user form will reflect these changes.');
+                } else {
+                    throw new Error('Failed to update settings');
+                }
+            } catch (error) {
+                console.error('Error updating settings:', error);
+                alert('Error updating settings. Please try again.');
+            }
+        }
+
         // Event listeners
         refreshBtn.addEventListener('click', fetchSubmissions);
-        autoRefreshStatus.addEventListener('click', toggleAutoRefresh);
+        clearListBtn.addEventListener('click', clearList);
+        settingsBtn.addEventListener('click', openCustomizationModal);
 
         // Initial load
         fetchSubmissions();
@@ -280,6 +538,204 @@
         // Cleanup on page unload
         window.addEventListener('beforeunload', () => {
             stopAutoRefresh();
+        });
+
+        // Sorting functions
+        function sortTable(column) {
+            // Toggle sort direction if same column
+            if (currentSort.column === column) {
+                currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSort.column = column;
+                currentSort.direction = 'asc';
+            }
+            
+            // Update sort indicators
+            updateSortIndicators();
+            
+            // Re-render table with sorted data
+            renderTable();
+        }
+        
+        function sortSubmissions(submissions) {
+            if (!currentSort.column) {
+                return submissions.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); // Default: newest first
+            }
+            
+            return [...submissions].sort((a, b) => {
+                let aVal = a[currentSort.column];
+                let bVal = b[currentSort.column];
+                
+                // Handle special cases
+                if (currentSort.column === 'played') {
+                    const playedSongs = JSON.parse(localStorage.getItem('playedSongs') || '{}');
+                    aVal = playedSongs[a.id] ? 1 : 0;
+                    bVal = playedSongs[b.id] ? 1 : 0;
+                } else if (currentSort.column === 'created_at') {
+                    aVal = new Date(aVal);
+                    bVal = new Date(bVal);
+                } else if (currentSort.column === 'bpm') {
+                    aVal = aVal === 'Unknown' || !aVal ? 0 : parseInt(aVal);
+                    bVal = bVal === 'Unknown' || !bVal ? 0 : parseInt(bVal);
+                } else {
+                    // Handle null/undefined values
+                    aVal = aVal || '';
+                    bVal = bVal || '';
+                }
+                
+                if (aVal < bVal) return currentSort.direction === 'asc' ? -1 : 1;
+                if (aVal > bVal) return currentSort.direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+        
+        function updateSortIndicators() {
+            // Reset all indicators
+            document.querySelectorAll('[id^="sort-"]').forEach(indicator => {
+                indicator.classList.add('opacity-0');
+                indicator.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>';
+            });
+            
+            // Show indicator for current sort column
+            if (currentSort.column) {
+                const indicator = document.getElementById(`sort-${currentSort.column}`);
+                if (indicator) {
+                    indicator.classList.remove('opacity-0');
+                    if (currentSort.direction === 'desc') {
+                        indicator.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>';
+                    }
+                }
+            }
+        }
+        
+        function renderTable() {
+            if (allSubmissions.length === 0) {
+                emptyState.classList.remove('hidden');
+                tableContainer.classList.add('hidden');
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            tableContainer.classList.remove('hidden');
+            
+            const sortedSubmissions = sortSubmissions(allSubmissions);
+            
+            // Populate table
+            submissionsTableBody.innerHTML = sortedSubmissions.map(submission => `
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-6 py-4 whitespace-nowrap cursor-pointer" onclick="togglePlayedCheckbox(${submission.id})">
+                        <div class="flex items-center justify-center">
+                            <input 
+                                type="checkbox" 
+                                id="played-${submission.id}"
+                                class="h-6 w-6 text-blue-600 focus:ring-blue-500 border-gray-300 rounded cursor-pointer"
+                                onchange="togglePlayed(${submission.id})"
+                            >
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${submission.song_name}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${submission.artist}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <button 
+                            onclick="showOriginalInput(${submission.id}, '${(submission.original_song_name || submission.song_name).replace(/'/g, "\\'")}', '${(submission.original_artist || submission.artist).replace(/'/g, "\\'")}')"
+                            class="text-blue-600 hover:text-blue-800 transition-colors"
+                            title="View original input"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                        </button>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${submission.user_name || 'Anonymous'}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${submission.bpm || '-'}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${submission.key_camelot || '-'}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${submission.key_regular || '-'}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-500">${formatDate(submission.created_at)}</div>
+                    </td>
+                </tr>
+            `).join('');
+            
+            // Load played status after populating table
+            setTimeout(loadPlayedStatus, 100);
+        }
+
+        // Played checkbox functions
+        function togglePlayedCheckbox(submissionId) {
+            const checkbox = document.getElementById(`played-${submissionId}`);
+            console.log('Before toggle:', checkbox.checked);
+            checkbox.checked = !checkbox.checked;
+            console.log('After toggle:', checkbox.checked);
+            togglePlayed(submissionId);
+        }
+        
+        function togglePlayed(submissionId) {
+            const checkbox = document.getElementById(`played-${submissionId}`);
+            const isPlayed = checkbox.checked;
+            
+            // Store in localStorage
+            let playedSongs = JSON.parse(localStorage.getItem('playedSongs') || '{}');
+            playedSongs[submissionId] = isPlayed;
+            localStorage.setItem('playedSongs', JSON.stringify(playedSongs));
+            
+            // Update row styling
+            const row = checkbox.closest('tr');
+            if (isPlayed) {
+                row.classList.add('opacity-60', 'line-through');
+            } else {
+                row.classList.remove('opacity-60', 'line-through');
+            }
+        }
+        
+        function loadPlayedStatus() {
+            const playedSongs = JSON.parse(localStorage.getItem('playedSongs') || '{}');
+            Object.keys(playedSongs).forEach(submissionId => {
+                const checkbox = document.getElementById(`played-${submissionId}`);
+                if (checkbox) {
+                    checkbox.checked = playedSongs[submissionId];
+                    const row = checkbox.closest('tr');
+                    if (playedSongs[submissionId]) {
+                        row.classList.add('opacity-60', 'line-through');
+                    }
+                }
+            });
+        }
+
+        // Original input modal functions
+        function showOriginalInput(id, originalSongName, originalArtist) {
+            document.getElementById('originalSongName').textContent = originalSongName;
+            document.getElementById('originalArtist').textContent = originalArtist;
+            document.getElementById('originalInputModal').classList.remove('hidden');
+        }
+
+        function closeOriginalInputModal() {
+            document.getElementById('originalInputModal').classList.add('hidden');
+        }
+
+        // Close modals when clicking outside
+        document.getElementById('originalInputModal').addEventListener('click', (e) => {
+            if (e.target.id === 'originalInputModal') {
+                closeOriginalInputModal();
+            }
+        });
+        
+        document.getElementById('clearConfirmModal').addEventListener('click', (e) => {
+            if (e.target.id === 'clearConfirmModal') {
+                closeClearConfirmModal();
+            }
         });
     </script>
 </body>
