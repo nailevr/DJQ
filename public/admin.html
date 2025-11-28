@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Song Requests</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
+    <title id="pageTitle">Loading... - DJQ</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
     <style>
         .fade-in {
             animation: fadeIn 0.5s ease-in;
@@ -20,183 +26,213 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
         }
+        
+        /* Glassmorphism effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .dark .glass {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sort-icon {
+            display: inline-flex;
+            align-items: center;
+            width: 16px;
+            height: 16px;
+        }
+        
+        .sort-icon svg {
+            width: 16px;
+            height: 16px;
+        }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
-    <div class="container mx-auto px-4 py-8">
-        <!-- Header -->
-        <div class="bg-white rounded-lg shadow-lg p-6 mb-6 fade-in">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                    <h1 class="text-3xl font-bold text-gray-800 mb-2">🎵 Song Request Dashboard</h1>
-                    <p class="text-gray-600">Manage all song requests</p>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-black min-h-screen transition-colors duration-200">
+    <div class="container mx-auto px-4 py-6 max-w-7xl">
+        <!-- Header with improved spacing and alignment -->
+        <div class="glass rounded-3xl shadow-2xl p-6 mb-6 fade-in">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                <!-- Left side: Title -->
+                <div class="flex-1">
+                    <h1 id="sessionTitle" class="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white tracking-tight">
+                        🎵 Loading...
+                    </h1>
                 </div>
-                <div class="mt-4 sm:mt-0 flex flex-col sm:flex-row gap-3">
+                
+                <!-- Right side: QR Code and Actions -->
+                <div class="flex flex-col lg:flex-row items-center gap-4">
                     <button 
-                        id="refreshBtn"
-                        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center"
+                        id="darkModeToggle"
+                        class="bg-gray-200 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 w-10 h-10 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300 flex items-center justify-center shadow-sm"
+                        onclick="toggleDarkMode()"
                     >
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        <svg id="sunIcon" class="w-5 h-5 hidden dark:block text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                         </svg>
-                        Refresh
-                    </button>
-                    <button 
-                        id="clearListBtn"
-                        class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center"
-                    >
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        <svg id="moonIcon" class="w-5 h-5 block dark:hidden text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
                         </svg>
-                        Clear List
                     </button>
                     <button 
                         id="settingsBtn"
-                        class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors flex items-center justify-center"
+                        class="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center font-medium"
                     >
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                         </svg>
                         Customize
                     </button>
-                    <a 
-                        href="/qr"
-                        class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors text-center"
-                    >
-                        View QR Code
-                    </a>
+                    <div id="qrCodeContainer" class="flex items-center justify-center">
+                        <!-- QR code will be inserted here -->
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div class="bg-white rounded-lg shadow-lg p-6 fade-in">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-blue-100 text-blue-600">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 fade-in">
+            <div class="glass rounded-2xl shadow-xl p-6 transform hover:scale-105 transition-all duration-300">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Total Requests</p>
+                        <p id="totalRequests" class="text-3xl font-bold text-gray-900 dark:text-white">-</p>
+                    </div>
+                    <div class="p-4 rounded-full bg-blue-500/20">
+                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
                         </svg>
                     </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Total Requests</p>
-                        <p id="totalRequests" class="text-2xl font-semibold text-gray-900">-</p>
+                </div>
+            </div>
+
+            <div class="glass rounded-2xl shadow-xl p-6 transform hover:scale-105 transition-all duration-300">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Played</p>
+                        <p id="playedCount" class="text-3xl font-bold text-gray-900 dark:text-white">0</p>
+                    </div>
+                    <div class="p-4 rounded-full bg-green-500/20">
+                        <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-lg shadow-lg p-6 fade-in">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-green-100 text-green-600">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="glass rounded-2xl shadow-xl p-6 transform hover:scale-105 transition-all duration-300">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Remaining</p>
+                        <p id="remainingCount" class="text-3xl font-bold text-gray-900 dark:text-white">-</p>
+                    </div>
+                    <div class="p-4 rounded-full bg-purple-500/20">
+                        <svg class="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Today's Requests</p>
-                        <p id="todayRequests" class="text-2xl font-semibold text-gray-900">-</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Queue Table -->
+        <div class="glass rounded-3xl shadow-2xl overflow-hidden fade-in">
+            <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Queue</h2>
+                    
+                    <div class="flex flex-wrap gap-3">
+                        <button 
+                            id="refreshBtn"
+                            class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2.5 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center font-medium"
+                        >
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                            </svg>
+                            Refresh
+                        </button>
+                        <button 
+                            id="clearListBtn"
+                            class="bg-red-500 hover:bg-red-600 text-white px-5 py-2.5 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center font-medium"
+                        >
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                            Clear List
+                        </button>
                     </div>
                 </div>
             </div>
-
-        </div>
-
-        <!-- Submissions Table -->
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden fade-in">
-            <div class="px-6 py-4 border-b border-gray-200">
-                <h2 class="text-xl font-semibold text-gray-800">Recent Submissions</h2>
-            </div>
             
             <!-- Loading State -->
-            <div id="loadingState" class="p-8 text-center">
-                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                <p class="mt-2 text-gray-600">Loading submissions...</p>
+            <div id="loadingState" class="p-12 text-center">
+                <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-4 border-blue-500"></div>
+                <p class="mt-4 text-gray-600 dark:text-gray-400 font-medium">Loading submissions...</p>
             </div>
 
             <!-- Empty State -->
-            <div id="emptyState" class="p-8 text-center hidden">
-                <div class="text-6xl mb-4">🎵</div>
-                <h3 class="text-lg font-medium text-gray-900 mb-2">No submissions yet</h3>
-                <p class="text-gray-600">Song requests will appear here once users start submitting them.</p>
+            <div id="emptyState" class="p-12 text-center hidden">
+                <div class="text-7xl mb-4">🎵</div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">No submissions yet</h3>
+                <p class="text-gray-600 dark:text-gray-400">Song requests will appear here once users start submitting them.</p>
             </div>
 
             <!-- Table -->
             <div id="tableContainer" class="hidden">
                 <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead class="bg-gray-50/50 dark:bg-gray-800/50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-12 cursor-pointer hover:bg-gray-100" onclick="sortTable('played')">
-                                    <div class="flex items-center">
-                                        Played
-                                        <svg class="ml-1 w-3 h-3 opacity-0" id="sort-played" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
-                                        </svg>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider w-16">
+                                    Played
+                                </th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-700/50" onclick="sortTable('song_name')">
+                                    <div class="flex items-center gap-1">
+                                    Song Name
+                                        <span id="sort-icon-song_name" class="sort-icon"></span>
                                     </div>
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortTable('song_name')">
-                                    <div class="flex items-center">
-                                        Song Name
-                                        <svg class="ml-1 w-3 h-3 opacity-0" id="sort-song_name" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
-                                        </svg>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-700/50" onclick="sortTable('artist')">
+                                    <div class="flex items-center gap-1">
+                                    Artist
+                                        <span id="sort-icon-artist" class="sort-icon"></span>
                                     </div>
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortTable('artist')">
-                                    <div class="flex items-center">
-                                        Artist
-                                        <svg class="ml-1 w-3 h-3 opacity-0" id="sort-artist" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
-                                        </svg>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-700/50" onclick="sortTable('user_name')">
+                                    <div class="flex items-center gap-1">
+                                    User's Name
+                                        <span id="sort-icon-user_name" class="sort-icon"></span>
                                     </div>
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Original Input
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortTable('user_name')">
-                                    <div class="flex items-center">
-                                        User's Name
-                                        <svg class="ml-1 w-3 h-3 opacity-0" id="sort-user_name" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
-                                        </svg>
-                                    </div>
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortTable('bpm')">
-                                    <div class="flex items-center">
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-700/50" onclick="sortTable('bpm')">
+                                    <div class="flex items-center gap-1">
                                         BPM
-                                        <svg class="ml-1 w-3 h-3 opacity-0" id="sort-bpm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
-                                        </svg>
+                                        <span id="sort-icon-bpm" class="sort-icon"></span>
                                     </div>
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortTable('key_camelot')">
-                                    <div class="flex items-center">
-                                        Camelot Key
-                                        <svg class="ml-1 w-3 h-3 opacity-0" id="sort-key_camelot" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
-                                        </svg>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-700/50" onclick="sortTable('key_camelot')">
+                                    <div class="flex items-center gap-1">
+                                        Key
+                                        <span id="sort-icon-key_camelot" class="sort-icon"></span>
                                     </div>
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortTable('key_regular')">
-                                    <div class="flex items-center">
-                                        Regular Key
-                                        <svg class="ml-1 w-3 h-3 opacity-0" id="sort-key_regular" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
-                                        </svg>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-100/50 dark:hover:bg-gray-700/50" onclick="sortTable('created_at')">
+                                    <div class="flex items-center gap-1">
+                                    Submitted
+                                        <span id="sort-icon-created_at" class="sort-icon"></span>
                                     </div>
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortTable('created_at')">
-                                    <div class="flex items-center">
-                                        Submitted
-                                        <svg class="ml-1 w-3 h-3 opacity-0" id="sort-created_at" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
-                                        </svg>
-                                    </div>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                                    Spotify
                                 </th>
                             </tr>
                         </thead>
-                        <tbody id="submissionsTableBody" class="bg-white divide-y divide-gray-200">
+                        <tbody id="submissionsTableBody" class="divide-y divide-gray-200 dark:divide-gray-700">
                             <!-- Dynamic content will be inserted here -->
                         </tbody>
                     </table>
@@ -206,85 +242,212 @@
         
         <!-- Footer -->
         <div class="text-center mt-8">
-            <p class="text-gray-500 text-sm">App designed and built by Rinat</p>
+            <p class="text-gray-600 dark:text-gray-400 font-medium">Designed and built by Rinat Nailev ✌🏼</p>
         </div>
     </div>
 
     <!-- Customization Modal -->
     <div id="customizationModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
-        <div class="relative top-10 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
-            <div class="mt-3">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg font-medium text-gray-900">Customize User Form</h3>
-                    <button onclick="closeCustomizationModal()" class="text-gray-400 hover:text-gray-600">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-                
+        <div class="relative top-10 mx-auto p-6 border w-full max-w-6xl shadow-lg rounded-2xl bg-white dark:bg-gray-800">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Customize User Form</h3>
+                <button onclick="closeCustomizationModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Left Side: Controls -->
                 <div class="space-y-6">
-                    <!-- Background Settings -->
+                    <!-- Background Type Toggle -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Background Image</label>
-                        <div class="grid grid-cols-2 gap-3">
-                            <button onclick="setBackground('agifcolossal3opt1.gif')" class="p-3 border rounded-lg hover:bg-gray-50 transition-colors">
-                                <div class="w-full h-16 bg-cover bg-center rounded" style="background-image: url('agifcolossal3opt1.gif')"></div>
-                                <p class="text-xs mt-1 text-center">Current (Animated)</p>
-                            </button>
-                            <button onclick="setBackground('solid')" class="p-3 border rounded-lg hover:bg-gray-50 transition-colors">
-                                <div class="w-full h-16 bg-gradient-to-br from-purple-600 to-blue-600 rounded"></div>
-                                <p class="text-xs mt-1 text-center">Purple Gradient</p>
-                            </button>
-                            <button onclick="setBackground('solid-dark')" class="p-3 border rounded-lg hover:bg-gray-50 transition-colors">
-                                <div class="w-full h-16 bg-gray-900 rounded"></div>
-                                <p class="text-xs mt-1 text-center">Dark</p>
-                            </button>
-                            <button onclick="setBackground('solid-light')" class="p-3 border rounded-lg hover:bg-gray-50 transition-colors">
-                                <div class="w-full h-16 bg-gradient-to-br from-blue-400 to-purple-400 rounded"></div>
-                                <p class="text-xs mt-1 text-center">Light Gradient</p>
-                            </button>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Background Type</label>
+                        <div class="flex gap-4 mb-4">
+                            <label class="flex items-center cursor-pointer">
+                                <input 
+                                    type="radio" 
+                                    name="backgroundType" 
+                                    value="image" 
+                                    id="bgTypeImage"
+                                    class="mr-2"
+                                    checked
+                                    onchange="toggleBackgroundType()"
+                                >
+                                <span class="text-sm text-gray-700 dark:text-gray-300">Image</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input 
+                                    type="radio" 
+                                    name="backgroundType" 
+                                    value="color" 
+                                    id="bgTypeColor"
+                                    class="mr-2"
+                                    onchange="toggleBackgroundType()"
+                                >
+                                <span class="text-sm text-gray-700 dark:text-gray-300">Color</span>
+                            </label>
+                        </div>
+                        
+                        <!-- Image Upload Section -->
+                        <div id="imageUploadSection">
+                            <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-purple-500 transition-colors">
+                                <input 
+                                    type="file" 
+                                    id="backgroundUpload"
+                                    accept="image/*"
+                                    class="hidden"
+                                    onchange="handleBackgroundUpload(event)"
+                                >
+                                <div id="uploadArea" onclick="document.getElementById('backgroundUpload').click()" class="cursor-pointer">
+                                    <svg class="w-12 h-12 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Click to upload background image</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">PNG, JPG, GIF up to 10MB</p>
+                                </div>
+                                <div id="uploadedImagePreview" class="hidden mt-4">
+                                    <img id="uploadedImage" src="" alt="Uploaded background" class="max-w-full max-h-32 mx-auto rounded-lg">
+                                    <button onclick="removeUploadedImage()" class="mt-2 text-sm text-red-600 hover:text-red-700">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Color Picker Section -->
+                        <div id="colorPickerSection" class="hidden">
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs text-gray-600 dark:text-gray-400 mb-2">Select Color</label>
+                                    <div class="grid grid-cols-8 gap-2">
+                                        <div class="color-option w-full h-10 rounded cursor-pointer border-2 border-transparent hover:border-gray-400 transition-all" style="background: #000000;" onclick="selectColor('#000000', this)" title="Black"></div>
+                                        <div class="color-option w-full h-10 rounded cursor-pointer border-2 border-transparent hover:border-gray-400 transition-all" style="background: #1a1a1a;" onclick="selectColor('#1a1a1a', this)" title="Dark Gray"></div>
+                                        <div class="color-option w-full h-10 rounded cursor-pointer border-2 border-transparent hover:border-gray-400 transition-all" style="background: #2d2d2d;" onclick="selectColor('#2d2d2d', this)" title="Gray"></div>
+                                        <div class="color-option w-full h-10 rounded cursor-pointer border-2 border-transparent hover:border-gray-400 transition-all" style="background: #4a4a4a;" onclick="selectColor('#4a4a4a', this)" title="Light Gray"></div>
+                                        <div class="color-option w-full h-10 rounded cursor-pointer border-2 border-transparent hover:border-gray-400 transition-all" style="background: #9333ea;" onclick="selectColor('#9333ea', this)" title="Purple"></div>
+                                        <div class="color-option w-full h-10 rounded cursor-pointer border-2 border-transparent hover:border-gray-400 transition-all" style="background: #2563eb;" onclick="selectColor('#2563eb', this)" title="Blue"></div>
+                                        <div class="color-option w-full h-10 rounded cursor-pointer border-2 border-transparent hover:border-gray-400 transition-all" style="background: #dc2626;" onclick="selectColor('#dc2626', this)" title="Red"></div>
+                                        <div class="color-option w-full h-10 rounded cursor-pointer border-2 border-transparent hover:border-gray-400 transition-all" style="background: #16a34a;" onclick="selectColor('#16a34a', this)" title="Green"></div>
+                                        <div class="color-option w-full h-10 rounded cursor-pointer border-2 border-transparent hover:border-gray-400 transition-all" style="background: #ea580c;" onclick="selectColor('#ea580c', this)" title="Orange"></div>
+                                        <div class="color-option w-full h-10 rounded cursor-pointer border-2 border-transparent hover:border-gray-400 transition-all" style="background: #ca8a04;" onclick="selectColor('#ca8a04', this)" title="Yellow"></div>
+                                        <div class="color-option w-full h-10 rounded cursor-pointer border-2 border-transparent hover:border-gray-400 transition-all" style="background: #0891b2;" onclick="selectColor('#0891b2', this)" title="Cyan"></div>
+                                        <div class="color-option w-full h-10 rounded cursor-pointer border-2 border-transparent hover:border-gray-400 transition-all" style="background: #7c3aed;" onclick="selectColor('#7c3aed', this)" title="Violet"></div>
+                                        <div class="color-option w-full h-10 rounded cursor-pointer border-2 border-transparent hover:border-gray-400 transition-all" style="background: #ec4899;" onclick="selectColor('#ec4899', this)" title="Pink"></div>
+                                        <div class="color-option w-full h-10 rounded cursor-pointer border-2 border-transparent hover:border-gray-400 transition-all" style="background: #14b8a6;" onclick="selectColor('#14b8a6', this)" title="Teal"></div>
+                                        <div class="color-option w-full h-10 rounded cursor-pointer border-2 border-transparent hover:border-gray-400 transition-all" style="background: #f59e0b;" onclick="selectColor('#f59e0b', this)" title="Amber"></div>
+                                        <div class="color-option w-full h-10 rounded cursor-pointer border-2 border-transparent hover:border-gray-400 transition-all" style="background: #6366f1;" onclick="selectColor('#6366f1', this)" title="Indigo"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-600 dark:text-gray-400 mb-2">Custom Color</label>
+                                    <div class="flex gap-2">
+                                        <input 
+                                            type="color" 
+                                            id="customColorPicker"
+                                            value="#000000"
+                                            onchange="selectColor(this.value)"
+                                            class="w-16 h-10 rounded cursor-pointer border border-gray-300 dark:border-gray-600"
+                                        >
+                                        <input 
+                                            type="text" 
+                                            id="customColorInput"
+                                            value="#000000"
+                                            placeholder="#000000"
+                                            onchange="selectColor(this.value)"
+                                            class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                                        >
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
                     <!-- Welcome Message -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Welcome Message</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Welcome Message</label>
                         <input 
                             type="text" 
                             id="welcomeMessage"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                            placeholder="Welcome to CAB's Karaoke Night"
-                            value="Welcome to CAB's Karaoke Night"
+                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            placeholder="Enter welcome message"
+                            value=""
+                            oninput="updatePreview()"
                         >
                     </div>
                     
                     <!-- Subtitle -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Subtitle</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Subtitle</label>
                         <input 
                             type="text" 
                             id="subtitleMessage"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                            placeholder="Let me hear you, Bereans!🫵"
-                            value="Let me hear you, Bereans!🫵"
+                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            placeholder="Enter subtitle"
+                            value=""
+                            oninput="updatePreview()"
                         >
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="flex gap-3 pt-4">
+                        <button 
+                            onclick="closeCustomizationModal()"
+                            class="flex-1 px-4 py-3 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors font-medium"
+                        >
+                            Cancel
+                        </button>
+                        <button 
+                            onclick="applyCustomizations()"
+                            class="flex-1 px-4 py-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors font-medium"
+                        >
+                            Apply Changes
+                        </button>
                     </div>
                 </div>
                 
-                <div class="mt-6 flex gap-3 justify-end">
-                    <button 
-                        onclick="closeCustomizationModal()"
-                        class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
-                    >
-                        Cancel
-                    </button>
-                    <button 
-                        onclick="applyCustomizations()"
-                        class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
-                    >
-                        Apply Changes
-                    </button>
+                <!-- Right Side: iPhone Frame Preview -->
+                <div class="flex items-center justify-center">
+                    <div class="iphone-frame" style="width: 320px; height: 640px; position: relative;">
+                        <!-- iPhone Frame -->
+                        <div class="bg-gray-900 rounded-[3rem] p-2 shadow-2xl" style="width: 100%; height: 100%;">
+                            <!-- Notch -->
+                            <div class="bg-gray-900 rounded-t-[2.5rem] h-8 flex items-center justify-center">
+                                <div class="w-32 h-5 bg-black rounded-full"></div>
+                            </div>
+                            
+                            <!-- Screen Content -->
+                            <div id="phonePreview" class="bg-black rounded-[2rem] overflow-hidden" style="height: calc(100% - 3rem); position: relative;">
+                                <!-- Preview content will be inserted here -->
+                                <div id="formPreview" class="h-full w-full relative" style="background: #000;">
+                                    <div class="flex flex-col items-center justify-center h-full p-6">
+                                        <div class="text-center mb-8 w-full">
+                                            <h1 id="previewTitle" class="text-2xl font-bold text-white mb-2">SESSION NAME</h1>
+                                            <p id="previewSubtitle" class="text-white/80 text-sm"></p>
+                                        </div>
+                                        <div class="w-full space-y-4">
+                                            <input 
+                                                type="text" 
+                                                class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 text-sm"
+                                                placeholder="Enter the song name"
+                                                disabled
+                                            >
+                                            <button 
+                                                class="w-full bg-green-500 text-white font-semibold py-3 px-4 rounded-xl text-sm"
+                                                disabled
+                                            >
+                                                Submit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Home Indicator -->
+                            <div class="bg-gray-900 rounded-b-[2.5rem] h-4 flex items-center justify-center">
+                                <div class="w-32 h-1 bg-white/30 rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -292,20 +455,20 @@
 
     <!-- Clear Confirmation Modal -->
     <div id="clearConfirmModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
-        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-gray-800">
             <div class="mt-3">
-                <div class="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4">
-                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 dark:bg-red-900/50 rounded-full mb-4">
+                    <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.268 19.5c-.77.833.192 2.5 1.732 2.5z"></path>
                     </svg>
                 </div>
                 <div class="text-center">
-                    <h3 class="text-lg font-medium text-gray-900 mb-2">Clear All Song Requests</h3>
-                    <p class="text-sm text-gray-500 mb-6">Are you sure you want to delete all song requests? This action cannot be undone.</p>
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Clear All Song Requests</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Are you sure you want to delete all song requests? This action cannot be undone.</p>
                     <div class="flex gap-3 justify-center">
                         <button 
                             onclick="closeClearConfirmModal()"
-                            class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
+                            class="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors"
                         >
                             Cancel
                         </button>
@@ -321,35 +484,65 @@
         </div>
     </div>
 
-    <!-- Original Input Modal -->
-    <div id="originalInputModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
-        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+    <!-- QR Code Expanded Modal -->
+    <div id="qrCodeModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+        <div class="relative top-20 mx-auto p-5 border w-[500px] max-w-[90vw] shadow-lg rounded-md bg-white dark:bg-gray-800">
             <div class="mt-3">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg font-medium text-gray-900">Original User Input</h3>
-                    <button onclick="closeOriginalInputModal()" class="text-gray-400 hover:text-gray-600">
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-white">Session QR Code</h3>
+                    <button onclick="toggleQRCode()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
                     </button>
                 </div>
-                <div class="space-y-3">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Original Song Name:</label>
-                        <div class="p-3 bg-gray-100 rounded-md">
-                            <span id="originalSongName" class="text-gray-900"></span>
-                        </div>
+                <div class="flex flex-col items-center">
+                    <div id="qrCodeExpanded" class="mb-4">
+                        <!-- Expanded QR code will be inserted here -->
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Original Artist:</label>
-                        <div class="p-3 bg-gray-100 rounded-md">
-                            <span id="originalArtist" class="text-gray-900"></span>
-                        </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 text-center mb-4">Share this QR code for song requests</p>
+                    <div class="flex gap-3 w-full">
+                        <button 
+                            onclick="openQRCodeInNewTab()"
+                            class="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center justify-center font-medium"
+                        >
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                            </svg>
+                            Open in New Tab
+                        </button>
+                        <button 
+                            onclick="copyQRCodeLink(event)"
+                            class="flex-1 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center justify-center font-medium"
+                        >
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                            </svg>
+                            Copy Link
+                        </button>
                     </div>
                 </div>
-                <div class="mt-6">
-                    <button onclick="closeOriginalInputModal()" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-                        Close
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-gray-800">
+            <div class="mt-3">
+                <div class="flex items-center justify-center w-12 h-12 mx-auto bg-green-100 dark:bg-green-900/50 rounded-full mb-4">
+                    <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Settings Updated!</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">The user form will reflect these changes.</p>
+                    <button 
+                        onclick="closeSuccessModal()"
+                        class="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-medium"
+                    >
+                        Got it!
                     </button>
                 </div>
             </div>
@@ -357,49 +550,217 @@
     </div>
 
     <script>
+        // Get sessionId from URL
+        const pathParts = window.location.pathname.split('/').filter(p => p && p !== 'admin.html');
+        let sessionId = null;
+        
+        // Check if URL is /admin/:sessionId
+        const adminIndex = pathParts.indexOf('admin');
+        if (adminIndex !== -1 && pathParts[adminIndex + 1]) {
+            sessionId = pathParts[adminIndex + 1];
+        } else if (pathParts.length > 0 && pathParts[0] !== 'admin') {
+            // Direct sessionId in path
+            sessionId = pathParts[0];
+        }
+        
+        // If no sessionId in URL, check localStorage
+        if (!sessionId) {
+            sessionId = localStorage.getItem('currentSessionId');
+        }
+        
+        if (!sessionId) {
+            alert('No session ID found. Please create a session first.');
+            window.location.href = '/';
+        }
+        
+        console.log('Session ID:', sessionId);
+        
+        // Dark mode toggle function
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const isDark = html.classList.toggle('dark');
+            localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+        }
+        
+        // Initialize dark mode from localStorage
+        function initDarkMode() {
+            const darkMode = localStorage.getItem('darkMode');
+            if (darkMode === 'enabled' || (!darkMode && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            }
+        }
+        
+        // Initialize on page load
+        initDarkMode();
+        
+        // Make toggleDarkMode available globally
+        window.toggleDarkMode = toggleDarkMode;
+        
+        // Generate QR code
+        const baseUrl = window.location.origin;
+        const qrCodeUrl = `${baseUrl}/${sessionId}`;
+        const qrCodeSmallUrl = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(qrCodeUrl)}`;
+        const qrCodeLargeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrCodeUrl)}`;
+        
+        // Small QR code in header
+        const qrContainer = document.getElementById('qrCodeContainer');
+        qrContainer.innerHTML = `<img src="${qrCodeSmallUrl}" alt="QR Code" class="rounded-lg shadow-sm cursor-pointer hover:opacity-80 transition-opacity" style="width: 80px; height: 80px;" onclick="toggleQRCode()">`;
+        
+        // Large QR code for modal
+        const qrExpanded = document.getElementById('qrCodeExpanded');
+        qrExpanded.innerHTML = `<img src="${qrCodeLargeUrl}" alt="QR Code" class="rounded-lg shadow-lg mx-auto">`;
+        
+        // QR Code toggle function
+        window.toggleQRCode = function() {
+            const modal = document.getElementById('qrCodeModal');
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        };
+        
+        // Close modal when clicking outside
+        document.getElementById('qrCodeModal').addEventListener('click', (e) => {
+            if (e.target.id === 'qrCodeModal') {
+                toggleQRCode();
+            }
+        });
+        
+        // Open QR code image in new tab
+        window.openQRCodeInNewTab = function() {
+            window.open(qrCodeLargeUrl, '_blank');
+        };
+        
+        // Copy QR code link to clipboard
+        window.copyQRCodeLink = async function(e) {
+            try {
+                await navigator.clipboard.writeText(qrCodeUrl);
+                // Show feedback
+                const button = e.target.closest('button');
+                const originalText = button.innerHTML;
+                button.innerHTML = '<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Copied!';
+                button.classList.remove('bg-green-500', 'hover:bg-green-600');
+                button.classList.add('bg-green-600');
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.remove('bg-green-600');
+                    button.classList.add('bg-green-500', 'hover:bg-green-600');
+                }, 2000);
+            } catch (error) {
+                console.error('Failed to copy:', error);
+                alert('Failed to copy link. Please try again.');
+            }
+        };
+        
+        // Load session name
+        async function loadSessionName() {
+            try {
+                const response = await fetch(`/api/sessions/${sessionId}`);
+                const result = await response.json();
+                
+                if (response.ok && result.session) {
+                    // Update session title
+                    const sessionTitle = document.getElementById('sessionTitle');
+                    if (sessionTitle && result.session.name) {
+                        sessionTitle.textContent = `🎵 ${result.session.name}`;
+                    }
+                    // Update page title
+                    const pageTitle = document.getElementById('pageTitle');
+                    if (pageTitle && result.session.name) {
+                        pageTitle.textContent = `${result.session.name} - DJQ`;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading session:', error);
+            }
+        }
+        
+        loadSessionName();
+        
         let autoRefreshInterval;
         let currentSort = { column: null, direction: 'asc' };
         let allSubmissions = [];
 
-        // DOM elements
         const loadingState = document.getElementById('loadingState');
         const emptyState = document.getElementById('emptyState');
         const tableContainer = document.getElementById('tableContainer');
         const submissionsTableBody = document.getElementById('submissionsTableBody');
         const totalRequests = document.getElementById('totalRequests');
-        const todayRequests = document.getElementById('todayRequests');
+        const playedCount = document.getElementById('playedCount');
+        const remainingCount = document.getElementById('remainingCount');
         const refreshBtn = document.getElementById('refreshBtn');
         const clearListBtn = document.getElementById('clearListBtn');
         const settingsBtn = document.getElementById('settingsBtn');
 
-        // Format date
         function formatDate(dateString) {
+            if (!dateString) return '-';
+            
+            // Parse the date - should be in ISO format with timezone from server
             const date = new Date(dateString);
-            return date.toLocaleString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+            
+            // Check if date is valid
+            if (isNaN(date.getTime())) {
+                return '-';
+            }
+            
+            // Format as local time with AM/PM
+            return date.toLocaleString(undefined, {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
+        }
+        
+        function updateStats() {
+            const playedSongsKey = `playedSongs_${sessionId}`;
+            const playedSongs = JSON.parse(localStorage.getItem(playedSongsKey) || '{}');
+            const played = Object.values(playedSongs).filter(v => v).length;
+            const total = allSubmissions.length;
+            
+            totalRequests.textContent = total;
+            playedCount.textContent = played;
+            remainingCount.textContent = total - played;
         }
 
-        // Fetch and display submissions
         async function fetchSubmissions() {
             try {
-                const response = await fetch('/api/submissions');
-                const submissions = await response.json();
+                if (!sessionId) {
+                    console.error('No sessionId available');
+                    loadingState.innerHTML = `
+                        <div class="text-red-500">
+                            <p>Error: No session ID found. Please create a session first.</p>
+                        </div>
+                    `;
+                    return;
+                }
                 
-                // Store all submissions for sorting
-                allSubmissions = submissions;
-
-                // Update stats
-                totalRequests.textContent = submissions.length;
+                console.log('Fetching submissions for session:', sessionId);
+                const response = await fetch(`/api/submissions?sessionId=${sessionId}`);
+                const data = await response.json();
                 
-                const today = new Date().toDateString();
-                const todayCount = submissions.filter(sub => 
-                    new Date(sub.created_at).toDateString() === today
-                ).length;
-                todayRequests.textContent = todayCount;
-
-                // Hide loading state
+                if (!response.ok) {
+                    console.error('API error:', response.status, data);
+                    
+                    // Handle not found
+                    if (response.status === 404) {
+                        throw new Error('Session not found. Please create a new session.');
+                    }
+                    
+                    throw new Error(data.error || `HTTP ${response.status}`);
+                }
+                
+                console.log('Submissions received:', data);
+                
+                // Handle array response
+                if (Array.isArray(data)) {
+                    allSubmissions = data;
+                } else {
+                    allSubmissions = [];
+                }
+                
+                updateStats();
                 loadingState.classList.add('hidden');
-
-                // Render table with current sort
                 renderTable();
             } catch (error) {
                 console.error('Error fetching submissions:', error);
@@ -408,22 +769,20 @@
                         <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <p>Error loading submissions. Please try again.</p>
+                        <p>Error loading submissions: ${error.message}</p>
+                        <p class="text-sm mt-2">Session ID: ${sessionId || 'Not found'}</p>
                     </div>
                 `;
             }
         }
 
-
-        // Start auto refresh
         function startAutoRefresh() {
             if (autoRefreshInterval) {
                 clearInterval(autoRefreshInterval);
             }
-            autoRefreshInterval = setInterval(fetchSubmissions, 5000); // Refresh every 5 seconds
+            autoRefreshInterval = setInterval(fetchSubmissions, 5000);
         }
 
-        // Stop auto refresh
         function stopAutoRefresh() {
             if (autoRefreshInterval) {
                 clearInterval(autoRefreshInterval);
@@ -431,37 +790,27 @@
             }
         }
 
-        // Clear list function
         function clearList() {
             document.getElementById('clearConfirmModal').classList.remove('hidden');
         }
         
         async function confirmClearList() {
-            console.log('Starting clear process...');
             try {
-                console.log('Sending DELETE request to /api/clear');
                 const response = await fetch('/api/clear', {
-                    method: 'DELETE'
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ sessionId: sessionId })
                 });
                 
-                console.log('Response status:', response.status);
                 const result = await response.json();
-                console.log('Response data:', result);
                 
                 if (response.ok) {
-                    // Clear localStorage for played songs
-                    localStorage.removeItem('playedSongs');
-                    console.log('Cleared localStorage');
-                    
-                    // Close modal
+                    const playedSongsKey = `playedSongs_${sessionId}`;
+                    localStorage.removeItem(playedSongsKey);
                     closeClearConfirmModal();
-                    console.log('Closed modal');
-                    
-                    // Refresh the table
                     await fetchSubmissions();
-                    console.log('Refreshed table');
-                    
-                    console.log('All song requests cleared successfully!');
                 } else {
                     throw new Error('Failed to clear list: ' + result.error);
                 }
@@ -476,30 +825,250 @@
             document.getElementById('clearConfirmModal').classList.add('hidden');
         }
 
-        // Customization functions
-        function openCustomizationModal() {
+        // Helper functions for session-specific localStorage
+        function getSessionStorage(key) {
+            return localStorage.getItem(`${key}_${sessionId}`);
+        }
+        
+        function setSessionStorage(key, value) {
+            localStorage.setItem(`${key}_${sessionId}`, value);
+        }
+        
+        function removeSessionStorage(key) {
+            localStorage.removeItem(`${key}_${sessionId}`);
+        }
+        
+        async function openCustomizationModal() {
             document.getElementById('customizationModal').classList.remove('hidden');
+            
+            // Load session-specific settings
+            try {
+                const response = await fetch(`/api/settings?sessionId=${sessionId}`);
+                const settings = await response.json();
+                
+                // Populate form fields with session settings
+                const welcomeInput = document.getElementById('welcomeMessage');
+                const subtitleInput = document.getElementById('subtitleMessage');
+                
+                if (welcomeInput) {
+                    welcomeInput.value = settings.welcomeMessage || '';
+                }
+                if (subtitleInput) {
+                    subtitleInput.value = settings.subtitleMessage || '';
+                }
+                
+                // Handle background
+                const previewImg = document.getElementById('uploadedImage');
+                const previewDiv = document.getElementById('uploadedImagePreview');
+                const uploadArea = document.getElementById('uploadArea');
+                
+                if (settings.background && settings.background.startsWith('data:image')) {
+                    // It's an uploaded image
+                    if (previewImg && previewDiv && uploadArea) {
+                        previewImg.src = settings.background;
+                        previewDiv.classList.remove('hidden');
+                        uploadArea.classList.add('hidden');
+                    }
+                    // Store in session-specific localStorage for preview
+                    setSessionStorage('uploadedBackground', settings.background);
+                    document.getElementById('bgTypeImage').checked = true;
+                } else {
+                    // It's a color or default
+                    const color = settings.background || '#000000';
+                    setSessionStorage('selectedColor', color);
+                    document.getElementById('customColorPicker').value = color;
+                    document.getElementById('customColorInput').value = color;
+                    document.getElementById('bgTypeColor').checked = true;
+                    
+                    // Hide image preview if it was shown
+                    if (previewDiv && uploadArea) {
+                        previewDiv.classList.add('hidden');
+                        uploadArea.classList.remove('hidden');
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading settings:', error);
+                // Default to color mode with black if error
+                setSessionStorage('selectedColor', '#000000');
+                document.getElementById('customColorPicker').value = '#000000';
+                document.getElementById('customColorInput').value = '#000000';
+                document.getElementById('bgTypeColor').checked = true;
+            }
+            
+            toggleBackgroundType();
+            setTimeout(updatePreview, 100);
         }
         
         function closeCustomizationModal() {
             document.getElementById('customizationModal').classList.add('hidden');
         }
         
+        function showSuccessModal() {
+            document.getElementById('successModal').classList.remove('hidden');
+        }
+        
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.add('hidden');
+        }
+        
+        // Make functions globally available
+        window.closeSuccessModal = closeSuccessModal;
+        
+        // Close success modal when clicking outside
+        document.getElementById('successModal').addEventListener('click', (e) => {
+            if (e.target.id === 'successModal') {
+                closeSuccessModal();
+            }
+        });
+        
         function setBackground(backgroundType) {
-            // Store the selection visually
             document.querySelectorAll('[onclick^="setBackground"]').forEach(btn => {
                 btn.classList.remove('ring-2', 'ring-purple-500');
             });
-            event.target.closest('button').classList.add('ring-2', 'ring-purple-500');
-            
-            // Store the selection
+            if (event && event.target) {
+                event.target.closest('button').classList.add('ring-2', 'ring-purple-500');
+            }
             localStorage.setItem('selectedBackground', backgroundType);
+        }
+        
+        // Handle background image upload
+        function handleBackgroundUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                // Check file size (10MB limit)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('File size must be less than 10MB');
+                    return;
+                }
+                
+                // Create a FileReader to read the file
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageUrl = e.target.result;
+                    
+                    // Store the image data URL in session-specific storage
+                    setSessionStorage('uploadedBackground', imageUrl);
+                    
+                    // Show preview of uploaded image
+                    const previewImg = document.getElementById('uploadedImage');
+                    const previewDiv = document.getElementById('uploadedImagePreview');
+                    const uploadArea = document.getElementById('uploadArea');
+                    
+                    if (previewImg && previewDiv && uploadArea) {
+                        previewImg.src = imageUrl;
+                        previewDiv.classList.remove('hidden');
+                        uploadArea.classList.add('hidden');
+                    }
+                    
+                    // Update the preview
+                    updatePreview();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // Remove uploaded image
+        function removeUploadedImage() {
+            removeSessionStorage('uploadedBackground');
+            const previewDiv = document.getElementById('uploadedImagePreview');
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('backgroundUpload');
+            
+            if (previewDiv && uploadArea && fileInput) {
+                previewDiv.classList.add('hidden');
+                uploadArea.classList.remove('hidden');
+                fileInput.value = '';
+            }
+            
+            updatePreview();
+        }
+        
+        // Toggle between image and color background
+        function toggleBackgroundType() {
+            const bgTypeImage = document.getElementById('bgTypeImage');
+            const bgTypeColor = document.getElementById('bgTypeColor');
+            const imageSection = document.getElementById('imageUploadSection');
+            const colorSection = document.getElementById('colorPickerSection');
+            
+            if (bgTypeImage.checked) {
+                imageSection.classList.remove('hidden');
+                colorSection.classList.add('hidden');
+            } else {
+                imageSection.classList.add('hidden');
+                colorSection.classList.remove('hidden');
+            }
+            updatePreview();
+        }
+        
+        // Select color from palette
+        function selectColor(color, element) {
+            setSessionStorage('selectedColor', color);
+            document.getElementById('customColorPicker').value = color;
+            document.getElementById('customColorInput').value = color;
+            
+            // Update selected color visual
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('ring-2', 'ring-purple-500');
+            });
+            if (element) {
+                element.classList.add('ring-2', 'ring-purple-500');
+            }
+            
+            updatePreview();
+        }
+        
+        // Update preview in real-time
+        function updatePreview() {
+            const welcomeMessage = document.getElementById('welcomeMessage')?.value || '';
+            const subtitleMessage = document.getElementById('subtitleMessage')?.value || '';
+            
+            // Update preview text
+            const previewTitle = document.getElementById('previewTitle');
+            const previewSubtitle = document.getElementById('previewSubtitle');
+            if (previewTitle) previewTitle.textContent = welcomeMessage || 'SESSION NAME';
+            if (previewSubtitle) previewSubtitle.textContent = subtitleMessage;
+            
+            // Update preview background
+            const previewContainer = document.getElementById('formPreview');
+            if (previewContainer) {
+                const bgTypeImage = document.getElementById('bgTypeImage');
+                
+                if (bgTypeImage && bgTypeImage.checked) {
+                    // Image mode
+                    const uploadedBackground = getSessionStorage('uploadedBackground');
+                    if (uploadedBackground) {
+                        previewContainer.style.background = `url('${uploadedBackground}') no-repeat center center`;
+                        previewContainer.style.backgroundSize = 'cover';
+                    } else {
+                        // Default to black background
+                        previewContainer.style.background = '#000';
+                        previewContainer.style.backgroundSize = 'cover';
+                    }
+                } else {
+                    // Color mode
+                    const selectedColor = getSessionStorage('selectedColor') || '#000000';
+                    previewContainer.style.background = selectedColor;
+                    previewContainer.style.backgroundSize = 'cover';
+                }
+            }
         }
         
         async function applyCustomizations() {
             const welcomeMessage = document.getElementById('welcomeMessage').value;
             const subtitleMessage = document.getElementById('subtitleMessage').value;
-            const selectedBackground = localStorage.getItem('selectedBackground') || 'agifcolossal3opt1.gif';
+            
+            // Determine background based on selected type
+            const bgTypeImage = document.getElementById('bgTypeImage');
+            let background = '#000';
+            
+            if (bgTypeImage && bgTypeImage.checked) {
+                // Image mode
+                const uploadedBackground = getSessionStorage('uploadedBackground');
+                background = uploadedBackground || '#000';
+            } else {
+                // Color mode
+                background = getSessionStorage('selectedColor') || '#000000';
+            }
             
             try {
                 const response = await fetch('/api/update-settings', {
@@ -508,15 +1077,16 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
+                        sessionId: sessionId,
                         welcomeMessage,
                         subtitleMessage,
-                        background: selectedBackground
+                        background: background
                     })
                 });
                 
                 if (response.ok) {
                     closeCustomizationModal();
-                    alert('Settings updated successfully! The user form will reflect these changes.');
+                    showSuccessModal();
                 } else {
                     throw new Error('Failed to update settings');
                 }
@@ -526,59 +1096,94 @@
             }
         }
 
-        // Event listeners
         refreshBtn.addEventListener('click', fetchSubmissions);
         clearListBtn.addEventListener('click', clearList);
         settingsBtn.addEventListener('click', openCustomizationModal);
 
-        // Initial load
         fetchSubmissions();
         startAutoRefresh();
 
-        // Cleanup on page unload
         window.addEventListener('beforeunload', () => {
             stopAutoRefresh();
         });
 
-        // Sorting functions
         function sortTable(column) {
-            // Toggle sort direction if same column
             if (currentSort.column === column) {
                 currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
             } else {
                 currentSort.column = column;
                 currentSort.direction = 'asc';
             }
-            
-            // Update sort indicators
-            updateSortIndicators();
-            
-            // Re-render table with sorted data
+            updateSortIcons();
             renderTable();
         }
         
-        function sortSubmissions(submissions) {
-            if (!currentSort.column) {
-                return submissions.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); // Default: newest first
-            }
+        function updateSortIcons() {
+            // Get all sortable columns
+            const sortableColumns = ['song_name', 'artist', 'user_name', 'bpm', 'key_camelot', 'created_at'];
             
-            return [...submissions].sort((a, b) => {
+            sortableColumns.forEach(col => {
+                const iconElement = document.getElementById(`sort-icon-${col}`);
+                if (!iconElement) return;
+                
+                if (currentSort.column === col) {
+                    // Show icon based on sort direction
+                    if (currentSort.direction === 'asc') {
+                        iconElement.innerHTML = `
+                            <svg class="w-4 h-4 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                            </svg>
+                        `;
+                    } else {
+                        iconElement.innerHTML = `
+                            <svg class="w-4 h-4 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        `;
+                    }
+                } else {
+                    // Show neutral sort icon
+                    iconElement.innerHTML = `
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                        </svg>
+                    `;
+                }
+            });
+        }
+        
+        function sortSubmissions(submissions) {
+            const playedSongsKey = `playedSongs_${sessionId}`;
+            const playedSongs = JSON.parse(localStorage.getItem(playedSongsKey) || '{}');
+            
+            // Separate played and unplayed songs
+            const unplayed = [];
+            const played = [];
+            
+            submissions.forEach(sub => {
+                if (playedSongs[sub.id]) {
+                    played.push(sub);
+                } else {
+                    unplayed.push(sub);
+                }
+            });
+            
+            // Sort function for both groups
+            const sortFunction = (a, b) => {
+                if (!currentSort.column) {
+                    return new Date(b.created_at) - new Date(a.created_at);
+                }
+                
                 let aVal = a[currentSort.column];
                 let bVal = b[currentSort.column];
                 
-                // Handle special cases
-                if (currentSort.column === 'played') {
-                    const playedSongs = JSON.parse(localStorage.getItem('playedSongs') || '{}');
-                    aVal = playedSongs[a.id] ? 1 : 0;
-                    bVal = playedSongs[b.id] ? 1 : 0;
-                } else if (currentSort.column === 'created_at') {
+                if (currentSort.column === 'created_at') {
                     aVal = new Date(aVal);
                     bVal = new Date(bVal);
                 } else if (currentSort.column === 'bpm') {
                     aVal = aVal === 'Unknown' || !aVal ? 0 : parseInt(aVal);
                     bVal = bVal === 'Unknown' || !bVal ? 0 : parseInt(bVal);
                 } else {
-                    // Handle null/undefined values
                     aVal = aVal || '';
                     bVal = bVal || '';
                 }
@@ -586,152 +1191,103 @@
                 if (aVal < bVal) return currentSort.direction === 'asc' ? -1 : 1;
                 if (aVal > bVal) return currentSort.direction === 'asc' ? 1 : -1;
                 return 0;
-            });
-        }
-        
-        function updateSortIndicators() {
-            // Reset all indicators
-            document.querySelectorAll('[id^="sort-"]').forEach(indicator => {
-                indicator.classList.add('opacity-0');
-                indicator.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>';
-            });
+            };
             
-            // Show indicator for current sort column
-            if (currentSort.column) {
-                const indicator = document.getElementById(`sort-${currentSort.column}`);
-                if (indicator) {
-                    indicator.classList.remove('opacity-0');
-                    if (currentSort.direction === 'desc') {
-                        indicator.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>';
-                    }
-                }
-            }
+            // Sort both groups
+            unplayed.sort(sortFunction);
+            played.sort(sortFunction);
+            
+            // Return unplayed first, then played at the bottom
+            return [...unplayed, ...played];
         }
         
         function renderTable() {
             if (allSubmissions.length === 0) {
                 emptyState.classList.remove('hidden');
                 tableContainer.classList.add('hidden');
+                updateStats();
+                updateSortIcons();
                 return;
             }
             
             emptyState.classList.add('hidden');
             tableContainer.classList.remove('hidden');
             
+            updateSortIcons();
             const sortedSubmissions = sortSubmissions(allSubmissions);
             
-            // Populate table
-            submissionsTableBody.innerHTML = sortedSubmissions.map(submission => `
-                <tr class="hover:bg-gray-50 transition-colors">
-                    <td class="px-6 py-4 whitespace-nowrap cursor-pointer" onclick="togglePlayedCheckbox(${submission.id})">
-                        <div class="flex items-center justify-center">
+            submissionsTableBody.innerHTML = sortedSubmissions.map((sub, index) => {
+                const playedSongsKey = `playedSongs_${sessionId}`;
+                const playedSongs = JSON.parse(localStorage.getItem(playedSongsKey) || '{}');
+                const isPlayed = playedSongs[sub.id] || false;
+                const keyDisplay = sub.key_camelot || sub.key_regular || '-';
+                
+                return `
+                    <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition-all ${isPlayed ? 'opacity-50' : ''}">
+                        <td class="px-6 py-4">
                             <input 
                                 type="checkbox" 
-                                id="played-${submission.id}"
-                                class="h-6 w-6 text-blue-600 focus:ring-blue-500 border-gray-300 rounded cursor-pointer"
-                                onchange="togglePlayed(${submission.id})"
+                                id="played-${sub.id}"
+                                ${isPlayed ? 'checked' : ''}
+                                class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded cursor-pointer bg-white dark:bg-gray-700"
+                                onchange="togglePlayed(${sub.id})"
                             >
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium text-gray-900">${submission.song_name}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">${submission.artist}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <button 
-                            onclick="showOriginalInput(${submission.id}, '${(submission.original_song_name || submission.song_name).replace(/'/g, "\\'")}', '${(submission.original_artist || submission.artist).replace(/'/g, "\\'")}')"
-                            class="text-blue-600 hover:text-blue-800 transition-colors"
-                            title="View original input"
-                        >
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                            </svg>
-                        </button>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">${submission.user_name || 'Anonymous'}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">${submission.bpm || '-'}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">${submission.key_camelot || '-'}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">${submission.key_regular || '-'}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-500">${formatDate(submission.created_at)}</div>
-                    </td>
-                </tr>
-            `).join('');
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm font-semibold text-gray-900 dark:text-white">${sub.original_song_name || sub.song_name}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-gray-700 dark:text-gray-300">${sub.original_artist || sub.artist}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-gray-700 dark:text-gray-300">${sub.user_name || 'Anonymous'}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-gray-700 dark:text-gray-300">${sub.bpm || '-'}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-gray-700 dark:text-gray-300">${keyDisplay}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-gray-500 dark:text-gray-400">${formatDate(sub.created_at)}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm">
+                                ${sub.spotify_fetched ? 
+                                    (sub.bpm || sub.key_camelot ? 
+                                        '<span class="text-green-600 dark:text-green-400 font-medium">✓ Yes</span>' : 
+                                        '<span class="text-yellow-600 dark:text-yellow-400 font-medium">⚠ No Data</span>'
+                                    ) : 
+                                    '<span class="text-gray-400 dark:text-gray-500">-</span>'
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
             
-            // Load played status after populating table
-            setTimeout(loadPlayedStatus, 100);
+            updateStats();
         }
 
-        // Played checkbox functions
-        function togglePlayedCheckbox(submissionId) {
-            const checkbox = document.getElementById(`played-${submissionId}`);
-            console.log('Before toggle:', checkbox.checked);
-            checkbox.checked = !checkbox.checked;
-            console.log('After toggle:', checkbox.checked);
-            togglePlayed(submissionId);
-        }
-        
-        function togglePlayed(submissionId) {
-            const checkbox = document.getElementById(`played-${submissionId}`);
+        function togglePlayed(id) {
+            const checkbox = document.getElementById(`played-${id}`);
             const isPlayed = checkbox.checked;
             
-            // Store in localStorage
-            let playedSongs = JSON.parse(localStorage.getItem('playedSongs') || '{}');
-            playedSongs[submissionId] = isPlayed;
-            localStorage.setItem('playedSongs', JSON.stringify(playedSongs));
+            const playedSongsKey = `playedSongs_${sessionId}`;
+            let playedSongs = JSON.parse(localStorage.getItem(playedSongsKey) || '{}');
+            playedSongs[id] = isPlayed;
+            localStorage.setItem(playedSongsKey, JSON.stringify(playedSongs));
             
-            // Update row styling
             const row = checkbox.closest('tr');
             if (isPlayed) {
-                row.classList.add('opacity-60', 'line-through');
+                row.classList.add('opacity-50');
             } else {
-                row.classList.remove('opacity-60', 'line-through');
+                row.classList.remove('opacity-50');
             }
-        }
-        
-        function loadPlayedStatus() {
-            const playedSongs = JSON.parse(localStorage.getItem('playedSongs') || '{}');
-            Object.keys(playedSongs).forEach(submissionId => {
-                const checkbox = document.getElementById(`played-${submissionId}`);
-                if (checkbox) {
-                    checkbox.checked = playedSongs[submissionId];
-                    const row = checkbox.closest('tr');
-                    if (playedSongs[submissionId]) {
-                        row.classList.add('opacity-60', 'line-through');
-                    }
-                }
-            });
+            
+            updateStats();
         }
 
-        // Original input modal functions
-        function showOriginalInput(id, originalSongName, originalArtist) {
-            document.getElementById('originalSongName').textContent = originalSongName;
-            document.getElementById('originalArtist').textContent = originalArtist;
-            document.getElementById('originalInputModal').classList.remove('hidden');
-        }
-
-        function closeOriginalInputModal() {
-            document.getElementById('originalInputModal').classList.add('hidden');
-        }
-
-        // Close modals when clicking outside
-        document.getElementById('originalInputModal').addEventListener('click', (e) => {
-            if (e.target.id === 'originalInputModal') {
-                closeOriginalInputModal();
-            }
-        });
-        
         document.getElementById('clearConfirmModal').addEventListener('click', (e) => {
             if (e.target.id === 'clearConfirmModal') {
                 closeClearConfirmModal();

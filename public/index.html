@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-    <title>Song Request</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
+    <title id="pageTitle">DJQ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         * {
@@ -44,33 +45,179 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+        /* Splash screen styles - Apple style */
+        #splashScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease-out;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        #splashScreen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .welcome-container {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .welcome-container.visible {
+            animation: fadeInUp 1.2s ease-out forwards;
+        }
+        
+        .welcome-container h1 {
+            font-size: clamp(32px, 8vw, 96px);
+            font-weight: 600;
+            letter-spacing: -0.015em;
+            color: #fff;
+            margin-bottom: 20px;
+            white-space: nowrap;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .welcome-container h1 .letter {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: letterFadeIn 0.6s ease-out forwards;
+        }
+        
+        .welcome-container h1 .letter.space {
+            width: 0.3em;
+        }
+        
+        @keyframes letterFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .click-continue {
+            font-size: 28px;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 0.007em;
+            line-height: 1.2;
+            margin-top: 20px;
+            animation: fadeInOut 2s ease-in-out infinite;
+            cursor: pointer;
+        }
+        
+        .credit-line {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 0.01em;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.5s forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
+        
+        @media (max-width: 768px) {
+            .click-continue {
+                font-size: 21px;
+            }
+        }
     </style>
 </head>
-<body class="min-h-screen relative bg-black" style="background: url('agifcolossal3opt1.gif') no-repeat center center fixed; background-size: cover; min-height: 100vh;">
-    <!-- Dark overlay for better readability -->
-    <div class="absolute inset-0 bg-black/60 pointer-events-none"></div>
-    <div class="container mx-auto px-4 py-8 relative z-10" style="margin: 0 auto;">
-        <div class="max-w-md mx-auto">
-            <!-- Header -->
-            <div class="text-center mb-8 fade-in">
-                <h1 id="welcomeTitle" class="text-3xl font-bold text-white mb-2">Welcome to CAB's Karaoke Night</h1>
-                <p id="welcomeSubtitle" class="text-purple-100">Let me hear you, Bereans!🫵</p>
+<body class="min-h-screen relative bg-black" style="min-height: 100vh;">
+    <!-- Splash Screen -->
+    <div id="splashScreen">
+        <div id="welcomeMessage" class="welcome-container">
+            <h1>Welcome to DJQ</h1>
+            <div class="click-continue" id="clickContinue">Click to start the session...</div>
+        </div>
+        <div class="credit-line">Designed and built by Rinat Nailev ✌🏼</div>
+    </div>
+    
+    <div class="container mx-auto px-4 relative z-10" style="margin: 0 auto; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+        <div class="max-w-md mx-auto w-full">
+            <!-- Session Creation Form (shown first) -->
+            <div id="sessionCreation" class="bg-transparent rounded-2xl p-6 fade-in hidden">
+                <div class="text-center mb-12">
+                    <h1 class="text-5xl font-semibold text-white mb-8" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; letter-spacing: -0.02em;">Create Your Queue</h1>
+                </div>
+                <form id="sessionForm" class="space-y-6">
+                    <div>
+                        <input 
+                            type="text" 
+                            id="sessionName" 
+                            name="sessionName" 
+                            required
+                            class="w-full px-6 py-4 bg-white/10 border border-white/20 rounded-2xl focus:ring-0 focus:border-white/40 focus:bg-white/15 transition-all duration-300 text-white placeholder-white/60 text-lg"
+                            style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;"
+                            placeholder="Give it a name"
+                        >
+                    </div>
+                    <button 
+                        type="submit" 
+                        id="createSessionBtn"
+                        class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-4 px-6 rounded-2xl border-none focus:outline-none focus:ring-0 transition-all duration-300 transform hover:scale-105 text-lg"
+                        style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;"
+                    >
+                        Create
+                    </button>
+                </form>
             </div>
 
-            <!-- Form -->
-            <div class="bg-transparent rounded-2xl p-6 fade-in">
-                <form id="songForm" class="space-y-6">
+            <!-- Song Request Form (shown after session creation) -->
+            <div id="songRequestForm" class="hidden">
+                <!-- Header -->
+                <div class="text-center mb-8 fade-in">
+                    <h1 id="welcomeTitle" class="text-3xl font-bold text-white mb-2">Welcome to CAB's Karaoke Night</h1>
+                    <p id="welcomeSubtitle" class="text-purple-100">Let me hear you, Bereans!🫵</p>
+                </div>
+
+                <!-- Form -->
+                <div class="bg-transparent rounded-2xl p-6 fade-in">
+                    <form id="songForm" class="space-y-6">
                     <!-- Song Name -->
-                    <div>
+                    <div class="relative">
                         <input 
                             type="text" 
                             id="songName" 
                             name="songName" 
                             required
+                            autocomplete="off"
                             class="w-full px-4 py-3 bg-black/40 border border-white/20 rounded-2xl focus:ring-0 focus:border-white/40 focus:bg-black/50 transition-all duration-300 text-white placeholder-white/50"
                             placeholder="Enter song name"
                         >
                         <div id="songNameError" class="text-red-500 text-sm mt-1 hidden"></div>
+                        <!-- Suggestions Dropdown -->
+                        <div id="songSuggestions" class="hidden absolute z-50 w-full mt-1 bg-black/90 border border-white/20 rounded-2xl shadow-2xl max-h-64 overflow-y-auto">
+                            <!-- Suggestions will be inserted here -->
+                        </div>
                     </div>
 
                     <!-- Artist -->
@@ -132,32 +279,354 @@
         </div>
         
         <!-- Footer -->
-        <div class="text-center mt-8 fade-in relative z-10">
-            <!-- Instagram Link -->
-            <div class="mb-4">
-                <p class="text-white text-sm font-medium mb-2">FOLLOW ME ON INSTA</p>
-                <a href="https://www.instagram.com/djrinataka/" target="_blank" rel="noopener noreferrer" class="inline-block hover:scale-110 transition-transform duration-200">
-                    <!-- Instagram Icon -->
-                    <svg class="w-8 h-8 mx-auto mb-2 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                    </svg>
-                    <p class="text-white text-sm font-medium">DJ RINATAKA</p>
-                </a>
+        <div class="fixed bottom-0 left-0 right-0 text-center pb-6 fade-in z-10">
+            <div class="max-w-xs mx-auto">
+                <!-- Instagram Link -->
+                <div class="mb-4">
+                    <a href="https://www.instagram.com/djrinat/" target="_blank" rel="noopener noreferrer" class="inline-block hover:scale-110 transition-transform duration-200">
+                        <!-- Instagram Icon -->
+                        <svg class="w-12 h-12 mx-auto mb-2 text-pink-500" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                        <p class="text-pink-500 text-sm font-medium">DJ RINAT</p>
+                    </a>
+                </div>
+                
+                <p class="text-white" style="font-size: 18px; font-weight: 400; color: rgba(255, 255, 255, 0.9); letter-spacing: 0.01em;">Designed and built by Rinat Nailev ✌🏼</p>
             </div>
-            
-            <p class="text-white text-sm">App designed and built by Rinat</p>
         </div>
         <!-- Updated for deployment -->
     </div>
 
     <script>
+        // Splash screen logic
+        const splashScreen = document.getElementById('splashScreen');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const clickContinue = document.getElementById('clickContinue');
+        const welcomeTitle = welcomeMessage.querySelector('h1');
+        let splashTimer;
+        
+        // Split text into letters and wrap each letter
+        function splitTextIntoLetters(element) {
+            const text = element.textContent;
+            element.textContent = '';
+            
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                const span = document.createElement('span');
+                
+                if (char === ' ') {
+                    span.className = 'letter space';
+                    span.textContent = '\u00A0'; // Non-breaking space
+                } else {
+                    span.className = 'letter';
+                    span.textContent = char;
+                }
+                
+                // Add delay to each letter (0.05s per letter)
+                span.style.animationDelay = `${i * 0.05}s`;
+                element.appendChild(span);
+            }
+        }
+        
+        // Initialize letter animation
+        splitTextIntoLetters(welcomeTitle);
+        
+        // Show dark screen for 0.1 seconds, then show welcome message
+        setTimeout(() => {
+            welcomeMessage.classList.add('visible');
+        }, 100);
+        
         const form = document.getElementById('songForm');
         const submitBtn = document.getElementById('submitBtn');
         const submitText = document.getElementById('submitText');
         const submitSpinner = document.getElementById('submitSpinner');
         const successModal = document.getElementById('successModal');
         const closeModal = document.getElementById('closeModal');
+        const sessionCreation = document.getElementById('sessionCreation');
+        const songRequestForm = document.getElementById('songRequestForm');
+        const sessionForm = document.getElementById('sessionForm');
+        
+        // Get sessionId from URL only (ignore localStorage on initial load)
+        const pathParts = window.location.pathname.split('/').filter(p => p && p !== 'index.html');
+        let sessionId = null;
+        
+        // Check if URL is /session/:sessionId
+        const sessionIndex = pathParts.indexOf('session');
+        if (sessionIndex !== -1 && pathParts[sessionIndex + 1]) {
+            sessionId = pathParts[sessionIndex + 1];
+        } else if (pathParts.length > 0 && pathParts[0] !== 'session' && pathParts[0] !== 'admin' && pathParts[0].length === 4) {
+            // Direct sessionId in path (4 characters)
+            sessionId = pathParts[0];
+        }
+        
+        // Handle click to continue
+        function hideSplashScreen() {
+            splashScreen.classList.add('hidden');
+            setTimeout(() => {
+                splashScreen.style.display = 'none';
+                // Always show session creation form when coming from splash screen
+                // (unless there's a sessionId in the URL)
+                if (sessionId) {
+                    // Session exists in URL, show song request form
+                    showSongRequestForm(sessionId);
+                } else {
+                    // No session in URL, show creation form
+                    // Ensure black background for session creation page
+                    document.body.style.background = '#000';
+                    document.body.style.backgroundSize = 'auto';
+                    sessionCreation.classList.remove('hidden');
+                    songRequestForm.classList.add('hidden');
+                }
+            }, 500);
+        }
+        
+        splashScreen.addEventListener('click', hideSplashScreen);
+        clickContinue.addEventListener('click', hideSplashScreen);
+        
+        // Initialize page based on sessionId
+        if (sessionId) {
+            // Session exists in URL, skip splash screen and show appropriate form
+            splashScreen.style.display = 'none';
+            showSongRequestForm(sessionId);
+        } else {
+            // No session in URL, show splash screen (user will click to create session)
+            // Splash screen is already visible by default
+        }
+        
+        // Session creation handler
+        sessionForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const sessionName = document.getElementById('sessionName').value.trim();
+            if (!sessionName) {
+                alert('Please enter a session name');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/sessions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name: sessionName })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    const newSessionId = result.session.id;
+                    localStorage.setItem('currentSessionId', newSessionId);
+                    // Redirect to admin dashboard
+                    window.location.href = `/admin/${newSessionId}`;
+                } else {
+                    alert('Error: ' + (result.error || 'Failed to create session'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Network error. Please try again.');
+            }
+        });
+        
+        // Function to show song request form
+        async function showSongRequestForm(sessionId) {
+            sessionCreation.classList.add('hidden');
+            songRequestForm.classList.remove('hidden');
+            
+            // Load session name and update page title
+            try {
+                const response = await fetch(`/api/sessions/${sessionId}`);
+                const result = await response.json();
+                if (response.ok && result.session && result.session.name) {
+                    const pageTitle = document.getElementById('pageTitle');
+                    if (pageTitle) {
+                        pageTitle.textContent = `${result.session.name} - DJQ`;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading session name:', error);
+            }
+            
+            // Load settings
+            loadSettings();
+        }
 
+        // Spotify autocomplete functionality
+        const songNameInput = document.getElementById('songName');
+        const artistInput = document.getElementById('artist');
+        const suggestionsContainer = document.getElementById('songSuggestions');
+        let suggestionTimeout = null;
+        let isSelectingSuggestion = false;
+        let currentSuggestions = [];
+        let selectedIndex = -1;
+        let selectedSpotifyId = null; // Store the Spotify ID of selected suggestion
+        
+        // Debounced function to fetch Spotify suggestions
+        function fetchSuggestions(query) {
+            if (!query || query.trim().length < 2) {
+                suggestionsContainer.classList.add('hidden');
+                currentSuggestions = [];
+                selectedIndex = -1;
+                return;
+            }
+            
+            clearTimeout(suggestionTimeout);
+            suggestionTimeout = setTimeout(async () => {
+                try {
+                    const response = await fetch(`/api/spotify/suggestions?q=${encodeURIComponent(query)}`);
+                    const data = await response.json();
+                    
+                    if (data.suggestions && data.suggestions.length > 0) {
+                        currentSuggestions = data.suggestions;
+                        displaySuggestions(data.suggestions);
+                        selectedIndex = -1;
+                    } else {
+                        suggestionsContainer.classList.add('hidden');
+                        currentSuggestions = [];
+                        selectedIndex = -1;
+                    }
+                } catch (error) {
+                    console.error('Error fetching suggestions:', error);
+                    suggestionsContainer.classList.add('hidden');
+                    currentSuggestions = [];
+                    selectedIndex = -1;
+                }
+            }, 300); // 300ms debounce
+        }
+        
+        // Display suggestions in the dropdown
+        function displaySuggestions(suggestions) {
+            suggestionsContainer.innerHTML = '';
+            
+            suggestions.forEach((suggestion, index) => {
+                const suggestionItem = document.createElement('div');
+                suggestionItem.className = `px-4 py-3 hover:bg-white/10 cursor-pointer border-b border-white/10 last:border-b-0 transition-colors ${index === selectedIndex ? 'bg-white/10' : ''}`;
+                const bpmText = suggestion.bpm ? `<span class="ml-2 px-2 py-0.5 bg-green-500/30 text-green-300 text-xs rounded-full font-semibold">${suggestion.bpm} BPM</span>` : '';
+                suggestionItem.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="flex-1">
+                            <div class="text-white font-medium">${escapeHtml(suggestion.songName)}</div>
+                            <div class="text-white/70 text-sm">${escapeHtml(suggestion.artist)}</div>
+                        </div>
+                        ${bpmText}
+                    </div>
+                `;
+                
+                suggestionItem.addEventListener('click', () => {
+                    selectSuggestion(suggestion);
+                });
+                
+                suggestionItem.addEventListener('mouseenter', () => {
+                    selectedIndex = index;
+                    updateHighlightedSuggestion();
+                });
+                
+                suggestionsContainer.appendChild(suggestionItem);
+            });
+            
+            suggestionsContainer.classList.remove('hidden');
+        }
+        
+        // Update highlighted suggestion
+        function updateHighlightedSuggestion() {
+            const items = suggestionsContainer.children;
+            for (let i = 0; i < items.length; i++) {
+                if (i === selectedIndex) {
+                    items[i].classList.add('bg-white/10');
+                } else {
+                    items[i].classList.remove('bg-white/10');
+                }
+            }
+        }
+        
+        // Store the original selected values to detect manual edits
+        let selectedSongName = null;
+        let selectedArtist = null;
+        
+        // Select a suggestion and fill the form
+        function selectSuggestion(suggestion) {
+            isSelectingSuggestion = true;
+            songNameInput.value = suggestion.songName;
+            artistInput.value = suggestion.artist;
+            selectedSpotifyId = suggestion.spotifyId; // Store Spotify ID for BPM/key lookup
+            selectedSongName = suggestion.songName; // Store for comparison
+            selectedArtist = suggestion.artist; // Store for comparison
+            console.log('✅ Suggestion selected - Spotify ID:', selectedSpotifyId, 'Song:', suggestion.songName, 'Artist:', suggestion.artist);
+            
+            suggestionsContainer.classList.add('hidden');
+            currentSuggestions = [];
+            selectedIndex = -1;
+            isSelectingSuggestion = false;
+            // Focus on artist field so user can edit if needed
+            artistInput.focus();
+        }
+        
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Handle input on song name field
+        songNameInput.addEventListener('input', (e) => {
+            if (isSelectingSuggestion) return;
+            const query = e.target.value.trim();
+            selectedIndex = -1;
+            
+            // Clear Spotify ID if user manually edited the song name
+            if (selectedSpotifyId && query !== selectedSongName) {
+                console.log('⚠️ Song name edited - clearing Spotify ID');
+                selectedSpotifyId = null;
+                selectedSongName = null;
+                selectedArtist = null;
+            }
+            
+            fetchSuggestions(query);
+        });
+        
+        // Keyboard navigation for suggestions
+        songNameInput.addEventListener('keydown', (e) => {
+            if (suggestionsContainer.classList.contains('hidden') || currentSuggestions.length === 0) {
+                if (e.key === 'Escape') {
+                    suggestionsContainer.classList.add('hidden');
+                }
+                return;
+            }
+            
+            switch(e.key) {
+                case 'ArrowDown':
+                    e.preventDefault();
+                    selectedIndex = Math.min(selectedIndex + 1, currentSuggestions.length - 1);
+                    updateHighlightedSuggestion();
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    selectedIndex = Math.max(selectedIndex - 1, -1);
+                    updateHighlightedSuggestion();
+                    break;
+                case 'Enter':
+                    if (selectedIndex >= 0 && selectedIndex < currentSuggestions.length) {
+                        e.preventDefault();
+                        selectSuggestion(currentSuggestions[selectedIndex]);
+                    }
+                    break;
+                case 'Escape':
+                    suggestionsContainer.classList.add('hidden');
+                    selectedIndex = -1;
+                    break;
+            }
+        });
+        
+        // Hide suggestions when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!songNameInput.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+                suggestionsContainer.classList.add('hidden');
+                selectedIndex = -1;
+            }
+        });
+        
         // Form validation
         function validateForm() {
             const songName = document.getElementById('songName').value.trim();
@@ -199,11 +668,25 @@
             submitSpinner.classList.remove('hidden');
 
             try {
+                if (!sessionId) {
+                    alert('Session ID is missing. Please create a session first.');
+                    return;
+                }
+                
                 const formData = {
                     songName: document.getElementById('songName').value.trim(),
                     artist: document.getElementById('artist').value.trim(),
-                    userName: document.getElementById('userName').value.trim() || null
+                    userName: document.getElementById('userName').value.trim() || null,
+                    sessionId: sessionId,
+                    spotifyId: selectedSpotifyId || null // Include Spotify ID if a suggestion was selected
                 };
+                
+                console.log('📤 Submitting form:', {
+                    songName: formData.songName,
+                    artist: formData.artist,
+                    sessionId: formData.sessionId,
+                    spotifyId: selectedSpotifyId || 'NONE - will not fetch BPM/key'
+                });
 
                 const response = await fetch('/api/submit', {
                     method: 'POST',
@@ -219,6 +702,10 @@
                     // Show success modal
                     successModal.classList.remove('hidden');
                     form.reset();
+                    // Clear Spotify tracking after successful submission
+                    selectedSpotifyId = null;
+                    selectedSongName = null;
+                    selectedArtist = null;
                 } else {
                     alert('Error: ' + (result.error || 'Failed to submit request'));
                 }
@@ -248,27 +735,64 @@
         // Load and apply settings
         async function loadSettings() {
             try {
-                const response = await fetch('/api/settings');
+                // Get sessionId from URL
+                const pathParts = window.location.pathname.split('/').filter(p => p && p !== 'index.html');
+                let currentSessionId = null;
+                
+                const sessionIndex = pathParts.indexOf('session');
+                if (sessionIndex !== -1 && pathParts[sessionIndex + 1]) {
+                    currentSessionId = pathParts[sessionIndex + 1];
+                } else if (pathParts.length > 0 && pathParts[0] !== 'session' && pathParts[0] !== 'admin' && pathParts[0].length === 4) {
+                    currentSessionId = pathParts[0];
+                }
+                
+                // Only load settings if we have a sessionId (not on session creation page)
+                if (!currentSessionId) {
+                    // Session creation page - always black background, don't load any settings
+                    const body = document.body;
+                    body.style.background = '#000';
+                    body.style.backgroundSize = 'auto';
+                    return;
+                }
+                
+                // Load session-specific settings
+                const response = await fetch(`/api/settings?sessionId=${currentSessionId}`);
                 const settings = await response.json();
                 
                 // Update welcome message
-                document.getElementById('welcomeTitle').textContent = settings.welcomeMessage;
-                document.getElementById('welcomeSubtitle').textContent = settings.subtitleMessage;
+                const welcomeTitle = document.getElementById('welcomeTitle');
+                const welcomeSubtitle = document.getElementById('welcomeSubtitle');
+                if (welcomeTitle && settings.welcomeMessage) {
+                    welcomeTitle.textContent = settings.welcomeMessage;
+                }
+                if (welcomeSubtitle) {
+                    welcomeSubtitle.textContent = settings.subtitleMessage || 'Submit your song below';
+                }
                 
-                // Update background
+                // Apply background
                 const body = document.body;
-                if (settings.background === 'solid') {
-                    body.style.background = 'linear-gradient(135deg, #9333ea 0%, #2563eb 100%)';
-                } else if (settings.background === 'solid-dark') {
-                    body.style.background = '#111827';
-                } else if (settings.background === 'solid-light') {
-                    body.style.background = 'linear-gradient(135deg, #60a5fa 0%, #a855f7 100%)';
+                if (settings.background) {
+                    if (settings.background.startsWith('data:image') || settings.background.startsWith('http')) {
+                        // It's an image (data URL or URL)
+                        body.style.background = `url('${settings.background}') no-repeat center center`;
+                        body.style.backgroundSize = 'cover';
+                        body.style.backgroundAttachment = 'fixed';
+                    } else {
+                        // It's a color
+                        body.style.background = settings.background;
+                        body.style.backgroundSize = 'auto';
+                    }
                 } else {
-                    body.style.background = `url('${settings.background}') no-repeat center center fixed`;
-                    body.style.backgroundSize = 'cover';
+                    // Default to black
+                    body.style.background = '#000';
+                    body.style.backgroundSize = 'auto';
                 }
             } catch (error) {
                 console.error('Error loading settings:', error);
+                // On error, ensure black background
+                const body = document.body;
+                body.style.background = '#000';
+                body.style.backgroundSize = 'auto';
             }
         }
 
