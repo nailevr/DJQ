@@ -361,15 +361,15 @@
         }
         
         // Handle click to continue
-        function hideSplashScreen() {
+        async function hideSplashScreen() {
             splashScreen.classList.add('hidden');
-            setTimeout(() => {
+            setTimeout(async () => {
                 splashScreen.style.display = 'none';
                 // Always show session creation form when coming from splash screen
                 // (unless there's a sessionId in the URL)
                 if (sessionId) {
                     // Session exists in URL, show song request form
-                    showSongRequestForm(sessionId);
+                    await showSongRequestForm(sessionId);
                 } else {
                     // No session in URL, show creation form
                     // Ensure black background for session creation page
@@ -385,14 +385,16 @@
         clickContinue.addEventListener('click', hideSplashScreen);
         
         // Initialize page based on sessionId
-        if (sessionId) {
-            // Session exists in URL, skip splash screen and show appropriate form
-            splashScreen.style.display = 'none';
-            showSongRequestForm(sessionId);
-        } else {
-            // No session in URL, show splash screen (user will click to create session)
-            // Splash screen is already visible by default
-        }
+        (async () => {
+            if (sessionId) {
+                // Session exists in URL, skip splash screen and show appropriate form
+                splashScreen.style.display = 'none';
+                await showSongRequestForm(sessionId);
+            } else {
+                // No session in URL, show splash screen (user will click to create session)
+                // Splash screen is already visible by default
+            }
+        })();
         
         // Session creation handler
         sessionForm.addEventListener('submit', async (e) => {
@@ -448,8 +450,8 @@
                 console.error('Error loading session name:', error);
             }
             
-            // Load settings
-            loadSettings();
+            // Load settings - IMPORTANT: await this to ensure it completes
+            await loadSettings();
         }
 
         // Spotify autocomplete functionality
@@ -746,6 +748,8 @@
                     currentSessionId = pathParts[0];
                 }
                 
+                console.log('Loading settings for session:', currentSessionId);
+                
                 // Only load settings if we have a sessionId (not on session creation page)
                 if (!currentSessionId) {
                     // Session creation page - always black background, don't load any settings
@@ -759,19 +763,26 @@
                 const response = await fetch(`/api/settings?sessionId=${currentSessionId}`);
                 const settings = await response.json();
                 
+                console.log('Settings received:', settings);
+                
                 // Update welcome message
                 const welcomeTitle = document.getElementById('welcomeTitle');
                 const welcomeSubtitle = document.getElementById('welcomeSubtitle');
+                
                 if (welcomeTitle) {
                     welcomeTitle.textContent = settings.welcomeMessage || 'Welcome';
+                    console.log('Set welcome title to:', settings.welcomeMessage);
                 }
+                
                 if (welcomeSubtitle) {
                     welcomeSubtitle.textContent = settings.subtitleMessage || 'Submit your song below';
+                    console.log('Set subtitle to:', settings.subtitleMessage);
                 }
                 
                 // Apply background
                 const body = document.body;
                 if (settings.background) {
+                    console.log('Applying background:', settings.background);
                     if (settings.background.startsWith('data:image') || settings.background.startsWith('http')) {
                         // It's an image (data URL or URL)
                         body.style.background = `url('${settings.background}') no-repeat center center`;
@@ -787,6 +798,8 @@
                     body.style.background = '#000';
                     body.style.backgroundSize = 'auto';
                 }
+                
+                console.log('Settings loaded and applied successfully');
             } catch (error) {
                 console.error('Error loading settings:', error);
                 // On error, ensure black background
