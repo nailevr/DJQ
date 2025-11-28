@@ -280,7 +280,7 @@
     </div>
     
     <!-- Footer -->
-    <footer id="mainFooter" class="w-full text-center py-6 fade-in mt-auto hidden" style="padding-top: 24px; padding-bottom: 24px;">
+    <footer id="mainFooter" class="w-full text-center py-6 fade-in mt-auto" style="padding-top: 24px; padding-bottom: 24px;">
         <div class="max-w-xs mx-auto">
             <!-- Instagram Link -->
             <div class="mb-4">
@@ -376,10 +376,10 @@
                     document.body.style.backgroundSize = 'auto';
                     sessionCreation.classList.remove('hidden');
                     songRequestForm.classList.add('hidden');
-                    // Hide footer on session creation page
+                    // Show footer on session creation page
                     const footer = document.getElementById('mainFooter');
                     if (footer) {
-                        footer.classList.add('hidden');
+                        footer.classList.remove('hidden');
                     }
                 }
             }, 500);
@@ -440,10 +440,10 @@
             sessionCreation.classList.add('hidden');
             songRequestForm.classList.remove('hidden');
             
-            // Show footer when song request form is shown
+            // Hide footer when song request form is shown
             const footer = document.getElementById('mainFooter');
             if (footer) {
-                footer.classList.remove('hidden');
+                footer.classList.add('hidden');
             }
             
             // Load session name and update page title
