@@ -47,6 +47,13 @@ const PORT = process.env.PORT || 3000;
 // Spotify API configuration
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
+
+// Validate Spotify credentials are set
+if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET) {
+  console.warn('⚠️  WARNING: Spotify credentials not set. Spotify features will not work.');
+  console.warn('   Set SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET environment variables.');
+}
+
 let spotifyAccessToken = null;
 let tokenExpiry = null;
 
